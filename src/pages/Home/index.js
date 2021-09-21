@@ -5,7 +5,7 @@ import {View, Text, Button} from 'react-native'
 export default function Contato({route}){
 const navigation = useNavigation()
 
-console.warn(route)
+// console.warn(route)
 
  return(
  <View>

@@ -1,27 +1,55 @@
 import { useNavigation } from '@react-navigation/native';
-import  React, { useState } from 'react'
-import {View, Text, Button} from 'react-native' 
+import React, { useState, useEffect } from 'react'
+import { View, Text, Button, TextInput, Keyboard, FlatList } from 'react-native'
 
 import api from '../services/api';
 
-export default function Contato({route}){
-const navigation = useNavigation()
+export default function Contato({ route }) {
 
-const [assignment,setAssiegment] = useState('');
+    const navigation = useNavigation()
 
-//console.warn(route)
-api.get("/assignment").then((api)=>{
-console.log(api.data);
-});
+    const [assignments, setAssignments] = useState([]);
 
- return(
- <View>
-     <Text>Assignmentss</Text>
-     <Text>{route.params?.email}</Text>
-     <Text>{route.params?.twitter}</Text>
+    //console.warn(route)
 
- <Button title="Voltar para o início" onPress={ () => navigation.goBack() }></Button>
+    useEffect(() => {
+        async function load() {
+            try {
+                const responseapi = await api.get('/assignment')
+                setAssignments(responseapi.data)
+                console.log(responseapi.data)
+                Keyboard.dismiss()
+            } catch (error) {
+                console.log('Erro ' + error)
+            }
+        }
+        load();
+    }, []);
 
- </View>
- );
-} 
+
+
+    return (
+        <View>
+            <View>
+                <FlatList
+                data={assignments}
+                keyExtractor={(item)=>item.id}
+                renderItem={({item})=><Task data={item}/>}
+                />
+            </View>
+
+            <Button title="Voltar para o início" onPress={() => navigation.goBack()}></Button>
+
+        </View>
+    );
+    function Task({ data }) {
+        return (
+            <View >
+                <Text>Name: {data.name}</Text>
+                <Text>Status: {data.status.toString()}</Text>
+                <Text>Image: {data.pathimage}</Text>
+                <Button title={"X"} ></Button>
+            </View>
+        )
+    }
+}
