@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import  React, { useState } from 'react'
 import {View, Text, Button} from 'react-native' 
 
-export default function Contato({route}){
+export default function Home({route}){
 const navigation = useNavigation()
 
 // console.warn(route)

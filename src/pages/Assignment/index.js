@@ -26,7 +26,11 @@ export default function Contato({ route }) {
         load();
     }, []);
 
+    async function remove(props) {
+        await api.delete(`assignment/${props.id}`);
+        setStatus('Delete successful');
 
+    }
 
     return (
         <View>
@@ -46,9 +50,9 @@ export default function Contato({ route }) {
         return (
             <View >
                 <Text>Name: {data.name}</Text>
-                <Text>Status: {data.status.toString()}</Text>
+                {/* <Text>Status: {data.status.toString()}</Text> */}
                 <Text>Image: {data.pathimage}</Text>
-                <Button title={"X"} ></Button>
+                <Button title={"X"} onPress={()=>remove(data)} ></Button>
             </View>
         )
     }
